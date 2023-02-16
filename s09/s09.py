@@ -51,13 +51,28 @@
 class Card:
 
     _hokm = 0
+    _active_suit = 0
     _suit2num = {'♥':0,'♦':1,'♣':2,'♠':3}
     _num2suit = {0:'♥',1:'♦',2:'♣',3:'♠'}
 
-    def __init__(self,number,suit):
+    def __init__(self,number,suit:int):
         self.number = number
         self.suit =suit
     
+    @classmethod
+    def set_hokm(cls,hokm):
+        if 0<=hokm<4:
+            cls._hokm = hokm
+        else:
+            raise Exception("hokm must be in 0<= hokm < 4 ")
+    
+    @classmethod
+    def set_active_suit(cls,suit):
+        if 0<=suit<4:
+            cls._active_suit = suit
+        else:
+            raise Exception("hokm must be in 0<= hokm < 4 ")
+
     @classmethod
     def number_to_suit(cls,number):
         return cls._num2suit[number]
@@ -67,10 +82,45 @@ class Card:
         return cls._suit2num[suit]
 
     def __gt__(self,other):
-        pass
+        if self.suit == Card._hokm and other.suit != Card._hokm:
+            return True
+        elif self.suit == Card._hokm and other.suit == Card._hokm:
+            return True if self.number > other.number else False
+            # return self.number > other.number
+        elif self.suit != Card._hokm and other.suit == Card._hokm:
+            return False
+        elif self.suit != Card._hokm and other.suit != Card._hokm:
+            if self.suit == Card._active_suit and other.suit != Card._active_suit:
+                return True
+            elif  self.suit == Card._active_suit and other.suit == Card._active_suit:
+                return self.number > other.number
+            elif  self.suit != Card._active_suit and other.suit == Card._active_suit:
+                return False
+            elif  self.suit != Card._active_suit and other.suit != Card._active_suit:
+                return self.suit > other.suit
+        
 
     def __lt__(self,other):
         pass
     
 
 print('❤️')
+a = Card(2,0)
+b = Card(5,2)
+a.set_hokm(0)
+a>b
+# print(Card.suit_to_number('♥'))
+
+
+# def sample_decorator(f):
+#     def wraper():
+#         f()
+#         print("salam")
+#     return wraper
+
+# @sample_decorator
+# def sample_def():
+#     print('hello')
+
+# sample_def = sample_decorator(sample_def)
+
