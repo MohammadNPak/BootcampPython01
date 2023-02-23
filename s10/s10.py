@@ -48,3 +48,4 @@ f.money=-2000
 print(f.money)
 f.money=10
 print(f.money)
+f.money = f.money+2
